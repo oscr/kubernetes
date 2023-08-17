@@ -173,7 +173,7 @@ func NewExposeFlags(ioStreams genericiooptions.IOStreams) *ExposeServiceFlags {
 func NewCmdExposeService(f cmdutil.Factory, streams genericiooptions.IOStreams) *cobra.Command {
 	flags := NewExposeFlags(streams)
 
-	validArgs := []string{}
+	validArgs := []string{"pod", "service", "replicationcontroller", "deployment", "replicaset"}
 	resources := regexp.MustCompile(`\s*,`).Split(exposeResources, -1)
 	for _, r := range resources {
 		validArgs = append(validArgs, strings.Fields(r)[0])
@@ -182,7 +182,7 @@ func NewCmdExposeService(f cmdutil.Factory, streams genericiooptions.IOStreams) 
 	cmd := &cobra.Command{
 		Use:                   "expose (-f FILENAME | TYPE NAME) [--port=port] [--protocol=TCP|UDP|SCTP] [--target-port=number-or-name] [--name=name] [--external-ip=external-ip-of-service] [--type=type]",
 		DisableFlagsInUseLine: true,
-		Short:                 i18n.T("Take a replication controller, service, deployment or pod and expose it as a new Kubernetes service"),
+		Short:                 i18n.T("Take a replication controller, replicaset, service, deployment or pod and expose it as a new Kubernetes service"),
 		Long:                  exposeLong,
 		Example:               exposeExample,
 		ValidArgsFunction:     completion.SpecifiedResourceTypeAndNameCompletionFunc(f, validArgs),
